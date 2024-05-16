@@ -1,14 +1,4 @@
-import os
-import unittest
-
-from dotenv import load_dotenv
-from playwright.sync_api import expect
-
-from mixins.utittest_mixin import (
-    MutablePageTestMixin,
-)
-
-load_dotenv()
+from playwright.sync_api import expect, Page
 
 
 class HomePageTest:
@@ -16,7 +6,9 @@ class HomePageTest:
 
     Can use:
         -- without page navigation
-        -- without reload page for each method.
+        -- without reload page for each method
+    Can't use:
+        -- with pytest ``page`` fixture
     """
 
     def test_title(self):
@@ -26,6 +18,20 @@ class HomePageTest:
         expect(self.page).to_have_title('Домашняя страница')
 
 
+class HomePageFixtureTest:
+    """"
+
+    Use:
+        -- with pytest ``page`` fixture.
+    """
+
+    def test_title(self, page: Page):
+        expect(page).to_have_title('Домашняя страница')
+
+    def test_header(self, page: Page):
+        expect(page).to_have_title('Домашняя страница')
+
+
 class AuthTest:
     """Auth test by 'Playwright' with 'unittest'.
 
@@ -33,13 +39,15 @@ class AuthTest:
         -- with page navigation.
         -- with load page when going to the new page.
     """
-    
+
+    page = None
     base_url = None
     user_name = None
     user_password = None
-    
+
     def test_go_to_login(self):
         """Test go to login page via click."""
+        # check page url
         page = self.page
         assert page.url == f'http://{self.base_url}/'
         # button
@@ -49,6 +57,7 @@ class AuthTest:
 
     def test_login(self):
         """Test login and logout."""
+        # check page url
         page = self.page
         assert page.url == f'http://{self.base_url}/users/login/'
         # user data input
@@ -60,32 +69,9 @@ class AuthTest:
 
     def test_login_redirect(self):
         """Test redirect login after clock submit."""
+        # check page url
         page = self.page
         assert page.url == f'http://{self.base_url}/'
         # button
         button = page.locator('#logout-nav')
         expect(button).to_contain_text('Выйти')
-
-
-class TestHomePageMutable(HomePageTest, MutablePageTestMixin):
-    """Home page test by mutable playwright page."""
-
-    base_url = '127.0.0.1:8000'
-
-
-class TestHomePageReloaded(AuthTest, MutablePageTestMixin):
-    """Home page test by reloaded playwright page.
-
-    Don't do that!
-    the order of execution of modules is sorted alphabetically by module names.
-
-    Use python fixtures.
-    """
-
-    base_url = '127.0.0.1:8000'
-    user_name = os.getenv('USER_NAME')
-    user_password = os.getenv('USER_PASSWORD')
-
-
-if __name__ == '__main__':
-    unittest.main()

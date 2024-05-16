@@ -4,12 +4,12 @@ from playwright.sync_api import sync_playwright
 
 
 class MutablePageTestMixin(unittest.TestCase):
-    """Without reload page for each mtest method mixin.
+    """Without reload page for each test method mixin.
 
-    A one-time page load is used for all test methods.
+    A one-time ``page`` load is used for all test methods.
 
-    Notes:
-    ------
+    Note
+    ----
         -- Set ``base_url`` attr value at derived class
         -- Runs methods alphabetically
         -- ``setUp`` once, when start class test
@@ -38,10 +38,10 @@ class MutablePageTestMixin(unittest.TestCase):
 
 
 class ReloadPageTestMixin(unittest.TestCase):
-    """Reload page for each mtest method mixin.
+    """Reload page for each test method mixin.
 
-    Notes:
-    ------
+    Note
+    ----
         -- Set ``base_url`` attr value at derived class
         -- Runs methods alphabetically
         -- Runs test not applies --headed
@@ -64,4 +64,3 @@ class ReloadPageTestMixin(unittest.TestCase):
         super().tearDownClass()
         cls.browser.close()
         cls.playwright.stop()
-
