@@ -1,21 +1,23 @@
 import unittest
-from unittest import skip
 
 import pytest
 from playwright.sync_api import Page, expect, sync_playwright
 
 
-class MyTest(unittest.TestCase):
+@unittest.skip
+class TestHomePage(unittest.TestCase):
     """Playwright test with unittest.TestCase without changing the page state.
 
     The page transition to URL will not be saved for another method.
     """
 
+    base_url = None
+
     # https://playwright.dev/python/docs/test-runners#using-with-unittesttestcase
     @pytest.fixture(autouse=True)
     def setup(self, page: Page):
         self.page = page
-        self.page.goto('127.0.0.1:8000')
+        self.page.goto(self.base_url)
 
     def test_title(self):
         expect(self.page).to_have_title('Домашняя страница')
@@ -25,9 +27,11 @@ class MyTest(unittest.TestCase):
         expect(locator).to_contain_text('Домашняя страница')
 
 
-@skip
 class TestAuth(unittest.TestCase):
     """Playwright test with unittest.TestCase with changing the page state.
+
+    Notes
+    -----
 
     Has a single attribute ``page`` for all methods.
     The ``page`` transition to another URL will be saved for another method.
@@ -49,15 +53,15 @@ class TestAuth(unittest.TestCase):
         cls.browser.close()
         cls.playwright.stop()
 
-    def test_1_click_login(self):
+    def test_click_login(self):
         locator = self.page.locator('#login-nav')
         expect(locator).to_contain_text('Войти')
         locator.click()
 
-    def test_2_title2(self):
+    def test_title(self):
         expect(self.page).to_have_title('Вход в приложение')
 
-    def test_3_headline2(self):
+    def test_headline2(self):
         locator = self.page.get_by_test_id('headline')
         expect(locator).to_contain_text('Вход в приложение')
 
