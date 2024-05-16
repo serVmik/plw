@@ -17,8 +17,6 @@ def setup(page: Page):
     class TestGitHubHomeTitle:
         def test_title(self, page: Page):
             expect(page).to_have_title('GitHub')
-        def test_header(self, page: Page):
-            expect(page).to_have_title('GitHub')
     """
     page.goto('base_url')
 

@@ -21,11 +21,14 @@ def setup(page: Page):
 class TestHomePage:
     """"""
 
-    def test_title(self, page: Page):
+    def test_page_title(self, page: Page):
+        """Test home page title."""
         expect(page).to_have_title('Домашняя страница')
 
-    def test_header(self, page: Page):
-        expect(page).to_have_title('Домашняя страница')
+    def test_page_headline(self, page: Page):
+        """Test home page title."""
+        headline = page.get_by_test_id('headline')
+        expect(headline).to_have_text('Домашняя страница')
 
 
 class TestHomePageFixture(HomePageTest, PageFixtureMixin):

@@ -16,6 +16,20 @@ class MutablePageTestMixin(unittest.TestCase):
         -- ``tearDown`` once, when end class test
         -- Reused page state
         -- Runs test not applies --headed
+
+    Example
+    -------
+    class TestHomePage(MutablePageTestMixin):
+
+        base_url = 'https://github.com/'
+        page: Page = None
+        response = None
+
+        def test_page_status(self):
+            assert self.response.ok
+
+        def test_page_title(self):
+            expect(self.page).to_have_title('GitHub')
     """
 
     base_url = None
@@ -27,7 +41,7 @@ class MutablePageTestMixin(unittest.TestCase):
         cls.playwright = sync_playwright().start()
         cls.browser = cls.playwright.chromium.launch()
         cls.page = cls.browser.new_page()
-        cls.page.goto(cls.base_url)
+        cls.response = cls.page.goto(cls.base_url)
 
     @classmethod
     def tearDownClass(cls):
@@ -56,7 +70,7 @@ class ReloadPageTestMixin(unittest.TestCase):
         cls.playwright = sync_playwright().start()
         cls.browser = cls.playwright.chromium.launch()
         cls.page = cls.browser.new_page()
-        cls.page.goto(cls.base_url)
+        cls.response = cls.page.goto(cls.base_url)
 
     @classmethod
     def tearDown(cls):

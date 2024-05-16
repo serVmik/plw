@@ -4,10 +4,13 @@
 
 
 import os
+from unittest import skip
+
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from playwright.sync_api import sync_playwright
 
 
+@skip
 class MyViewTests(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):

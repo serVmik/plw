@@ -11,11 +11,14 @@ class HomePageTest:
         -- with pytest ``page`` fixture
     """
 
-    def test_title(self):
+    def test_page_title(self):
+        """Test home page title."""
         expect(self.page).to_have_title('Домашняя страница')
 
-    def test_header(self):
-        expect(self.page).to_have_title('Домашняя страница')
+    def test_page_headline(self):
+        """Test home page title."""
+        headline = self.page.get_by_test_id('headline')
+        expect(headline).to_have_text('Домашняя страница')
 
 
 class HomePageFixtureTest:
@@ -25,11 +28,14 @@ class HomePageFixtureTest:
         -- with pytest ``page`` fixture.
     """
 
-    def test_title(self, page: Page):
+    def test_page_title(self, page: Page):
+        """Test home page title."""
         expect(page).to_have_title('Домашняя страница')
 
-    def test_header(self, page: Page):
-        expect(page).to_have_title('Домашняя страница')
+    def test_page_headline(self, page: Page):
+        """Test home page title."""
+        headline = page.get_by_test_id('headline')
+        expect(headline).to_have_text('Домашняя страница')
 
 
 class AuthTest:

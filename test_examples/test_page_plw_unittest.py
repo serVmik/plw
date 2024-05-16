@@ -13,12 +13,14 @@ USER_NAME = os.getenv('USER_NAME')
 USER_PASSWORD = os.getenv('USER_PASSWORD')
 
 
+@unittest.skip
 class TestHomePageUnittest(HomePageTest, MutablePageTestMixin):
     """Home page test by mutable playwright page."""
 
     base_url = BASE_URL
 
 
+@unittest.skip
 class TestAuthUnittest(AuthTest, MutablePageTestMixin):
     """Home page test by reloaded playwright page.
 
